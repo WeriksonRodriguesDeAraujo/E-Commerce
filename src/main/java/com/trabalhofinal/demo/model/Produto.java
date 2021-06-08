@@ -10,6 +10,7 @@ public class Produto {
     private Integer quantidadeEmEstoque;
     private Date dataDeCadastroDoProtudo;
     // tem que fazer a imagem aqui
+    //TESTANDO DANIEL
 
     //#region Getters e Setters
     public Integer getId() {
