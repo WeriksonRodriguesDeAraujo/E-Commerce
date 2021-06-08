@@ -10,7 +10,7 @@ public class Produto {
     private Integer quantidadeEmEstoque;
     private Date dataDeCadastroDoProtudo;
     // tem que fazer a imagem aqui
-    private Categoria categoria_id;
+    private Categoria categoria_id; //TEMOS QUE CRIAR A CATEGORIA
 
     //#region Getters e Setters
     public Integer getId() {
