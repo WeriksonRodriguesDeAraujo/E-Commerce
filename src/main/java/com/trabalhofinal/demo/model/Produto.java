@@ -10,7 +10,6 @@ public class Produto {
     private Integer quantidadeEmEstoque;
     private Date dataDeCadastroDoProtudo;
     // tem que fazer a imagem aqui
-    private Categoria categoria_id; //TEMOS QUE CRIAR A CATEGORIA
 
     //#region Getters e Setters
     public Integer getId() {
@@ -48,12 +47,6 @@ public class Produto {
     }
     public void setDataDeCadastroDoProtudo(Date dataDeCadastroDoProtudo) {
         this.dataDeCadastroDoProtudo = dataDeCadastroDoProtudo;
-    }
-    public Categoria getCategoria_id() {
-        return categoria_id;
-    }
-    public void setCategoria_id(Categoria categoria_id) {
-        this.categoria_id = categoria_id;
     }
     //#endregion
     
