@@ -9,7 +9,6 @@ public class Produto {
     private Double preco;
     private Integer quantidadeEmEstoque;
     private Date dataDeCadastroDoProtudo;
-    // tem que fazer a imagem aqui
 
     //#region Getters e Setters
     public Integer getId() {
