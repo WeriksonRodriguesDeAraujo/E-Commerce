@@ -18,16 +18,17 @@ public class EmailController {
 	@Autowired
 	Mailler mailler;
 
-	@ApiOperation(value = "Envia um email")
-    @PostMapping
-	public String enviarEmail(@RequestBody MensagemEmail email) {			
-		try {
-			mailler.enviar(email);
-			return "Deu certo";
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "Deu ruim";
-		}
-	}
+
+  @ApiOperation(value = "Envia um email")
+  @PostMapping
+  public String enviarEmail(@RequestBody MensagemEmail email) {			
+    try {
+      mailler.enviar(email);
+      return "Deu certo";
+
+    } catch (Exception e) {
+      e.printStackTrace();
+      return "Deu ruim";
+    }
+  }
 }
