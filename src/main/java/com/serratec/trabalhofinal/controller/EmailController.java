@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/api/email")
 public class EmailController {
@@ -16,15 +18,17 @@ public class EmailController {
 	@Autowired
 	Mailler mailler;
 
-    @PostMapping
-	public String enviarEmail(@RequestBody MensagemEmail email) {			
-		try {
-			mailler.enviar(email);
-			return "Deu certo";
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "Deu ruim";
-		}
-	}
+
+  @ApiOperation(value = "Envia um email")
+  @PostMapping
+  public String enviarEmail(@RequestBody MensagemEmail email) {			
+    try {
+      mailler.enviar(email);
+      return "Deu certo";
+
+    } catch (Exception e) {
+      e.printStackTrace();
+      return "Deu ruim";
+    }
+  }
 }

@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @SequenceGenerator(name ="generator_endereco", sequenceName = "sequence_endereco", initialValue = 1, allocationSize = 1)
 public class Endereco {
 
-    @Id
+  @Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generator_endereco")
     private Integer id;
 
