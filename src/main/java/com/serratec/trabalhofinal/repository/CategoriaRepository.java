@@ -1,10 +1,11 @@
-package com.trabalhofinal.demo.repository;
+package com.serratec.trabalhofinal.repository;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.trabalhofinal.demo.model.Categoria;
+import com.serratec.trabalhofinal.model.Categoria;
+
 
 public interface CategoriaRepository extends JpaRepository<Categoria, Integer>{
 	

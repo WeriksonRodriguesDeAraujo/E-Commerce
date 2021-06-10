@@ -1,4 +1,4 @@
-package com.trabalhofinal.demo.controller;
+package com.serratec.trabalhofinal.controller;
 
 import java.util.List;
 
@@ -16,8 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.trabalhofinal.demo.model.Categoria;
-import com.trabalhofinal.demo.service.CategoriaService;
+import com.serratec.trabalhofinal.model.Categoria;
+import com.serratec.trabalhofinal.service.CategoriaService;
+
 
 @RestController
 @CrossOrigin("*")

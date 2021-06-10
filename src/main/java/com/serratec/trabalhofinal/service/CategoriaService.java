@@ -1,6 +1,7 @@
-package com.trabalhofinal.demo.service;
+package com.serratec.trabalhofinal.service;
 
 import java.util.List;
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.trabalhofinal.demo.model.Categoria;
-import com.trabalhofinal.demo.repository.CategoriaRepository;
+import com.serratec.trabalhofinal.model.Categoria;
+import com.serratec.trabalhofinal.model.exception.ResourceBadRequestException;
+import com.serratec.trabalhofinal.model.exception.ResourceNotFoundException;
+import com.serratec.trabalhofinal.repository.CategoriaRepository;
+
 
 @Service
 public class CategoriaService {
@@ -54,7 +58,7 @@ public List<Categoria> obterTodos(){
 		var categoriaValida = _repositorioCategoria.findById(id);
 		
 		if(categoriaValida.isEmpty()) {
-			throw ResourceNotFoundException("Não existe categoria para o id informado: " + id);
+			throw new ResourceNotFoundException("Não existe categoria para o id informado: " + id);
 		}
 		
 		this._repositorioCategoria.save(categoria);

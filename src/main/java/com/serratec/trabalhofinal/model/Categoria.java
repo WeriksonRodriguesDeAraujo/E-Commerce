@@ -1,4 +1,4 @@
-package com.trabalhofinal.demo.model;
+package com.serratec.trabalhofinal.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,6 +24,9 @@ public class Categoria {
 	private String descricao;
 	
 	
+	public Categoria() {}
+
+	
 	public Categoria(Integer id, String nome, String descricao) {
 		this.id = id;
 		this.nome = nome;
@@ -34,18 +37,23 @@ public class Categoria {
 	public Integer getId() {
 		return id;
 	}
+	
 	public void setId(Integer id) {
 		this.id = id;
 	}
+	
 	public String getNome() {
 		return nome;
 	}
+	
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+	
 	public String getDescricao() {
 		return descricao;
 	}
+	
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}

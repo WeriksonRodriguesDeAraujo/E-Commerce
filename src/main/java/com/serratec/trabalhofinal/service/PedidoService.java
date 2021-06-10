@@ -1,6 +1,7 @@
-package com.trabalhofinal.demo.service;
+package com.serratec.trabalhofinal.service;
 
 import java.util.List;
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.trabalhofinal.demo.model.Categoria;
-import com.trabalhofinal.demo.model.Pedido;
-import com.trabalhofinal.demo.repository.PedidoRepository;
+import com.serratec.trabalhofinal.model.Pedido;
+import com.serratec.trabalhofinal.model.exception.ResourceBadRequestException;
+import com.serratec.trabalhofinal.model.exception.ResourceNotFoundException;
+import com.serratec.trabalhofinal.repository.PedidoRepository;
+
 
 @Service
 public class PedidoService {
@@ -55,7 +58,7 @@ public class PedidoService {
 		var pedidoValido = _repositorioPedido.findById(id);
 		
 		if(pedidoValido.isEmpty()) {
-			throw ResourceNotFoundException("Não existe pedido com o id informado: " + id);
+			throw new ResourceNotFoundException("Não existe pedido com o id informado: " + id);
 		}
 		
 		this._repositorioPedido.save(pedido);

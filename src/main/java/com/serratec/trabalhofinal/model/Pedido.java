@@ -1,4 +1,4 @@
-package com.trabalhofinal.demo.model;
+package com.serratec.trabalhofinal.model;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
 
 @Entity 
 @Table(name = "pedido")
@@ -23,7 +24,7 @@ public class Pedido {
 	@Column(nullable = false)
 	private Integer numero;
 	
-	@Column(nullable = false)
+	
 	private ArrayList<Produto> produtos;
 	
 	@Column(nullable = false)
@@ -38,6 +39,9 @@ public class Pedido {
 	private String status;
 	
 
+	public Pedido() {}
+
+	
 	public Pedido(
 			Integer id, 
 			Integer numero, 
@@ -56,22 +60,6 @@ public class Pedido {
 		this.status = status;
 	}
 	
-	public Pedido(
-			Integer numero, 
-			ArrayList<Produto> produtos, 
-			Integer clienteId, 
-			Date data, 
-			Double valorTotal,
-			String status) {
-		
-		this.numero = numero;
-		this.produtos = produtos;
-		this.clienteId = clienteId;
-		this.data = data;
-		this.valorTotal = valorTotal;
-		this.status = status;
-	}
-
 	
 	public Integer getId() {
 		return id;
@@ -84,6 +72,7 @@ public class Pedido {
 	public Integer getNumero() {
 		return numero;
 	}
+	
 	public void setNumero(Integer numero) {
 		this.numero = numero;
 	}
@@ -103,12 +92,15 @@ public class Pedido {
 	public void setClienteId(Integer clienteId) {
 		this.clienteId = clienteId;
 	}
+	
 	public Date getData() {
 		return data;
 	}
+	
 	public void setData(Date data) {
 		this.data = data;
 	}
+	
 	public Double getValorTotal() {
 		return valorTotal;
 	}
@@ -124,6 +116,7 @@ public class Pedido {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	
 	
 	public Boolean validoParaCadastro(){
         return(!this.produtos.isEmpty());

@@ -1,6 +1,7 @@
-package com.trabalhofinal.demo.controller;
+package com.serratec.trabalhofinal.controller;
 
 import java.util.List;
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.trabalhofinal.demo.model.Pedido;
-import com.trabalhofinal.demo.service.PedidoService;
+import com.serratec.trabalhofinal.model.Pedido;
+import com.serratec.trabalhofinal.service.PedidoService;
+
 
 @RestController
 @CrossOrigin("*")
