@@ -3,6 +3,7 @@ package com.serratec.trabalhofinal.controller;
 import java.util.List;
 import java.util.Optional;
 
+import com.serratec.trabalhofinal.model.Pedido;
 import com.serratec.trabalhofinal.model.Produto;
 import com.serratec.trabalhofinal.service.ProdutoService;
 
@@ -56,5 +57,10 @@ public class ProdutoController {
     @PutMapping("/{id}")
     public ResponseEntity<Produto> atualizar(@PathVariable(value = "id") Integer id, @RequestBody Produto Produto){
         return _servicoProduto.atualizar(id, Produto);
+    }
+    
+    @PutMapping("/{produto_id}/categoria/{categoria_id}")
+    public Produto relacionarProdutoComCategoria(@PathVariable Integer produto_id, @PathVariable Integer categoria_id) {
+    	return _servicoProduto.relacionarProdutoComCategoria(produto_id, categoria_id);
     }
 }

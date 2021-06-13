@@ -2,14 +2,26 @@ package com.serratec.trabalhofinal.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
 @Entity 
@@ -24,11 +36,12 @@ public class Pedido {
 	@Column(nullable = false)
 	private Integer numero;
 	
-	
-	private ArrayList<Produto> produtos;
-	
-	@Column(nullable = false)
-	private Integer clienteId;
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "produtos_pedidos",
+			   joinColumns = {@JoinColumn(name = "pedido_id")},
+			   inverseJoinColumns = {@JoinColumn(name = "produto_id")})
+	@Autowired
+	private List<Produto> produtos;
 	
 	private Date data;
 	
@@ -36,25 +49,29 @@ public class Pedido {
 	private Double valorTotal;
 	
 	@Column(nullable = false)
-	private String status;
+	private Boolean status;
 	
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "cliente_id", referencedColumnName = "id")
+    private Cliente cliente;
 
-	public Pedido() {}
+	public Pedido() {
+		this.data = new Date();
+	}
 
 	
 	public Pedido(
 			Integer id, 
 			Integer numero, 
-			ArrayList<Produto> produtos, 
-			Integer clienteId, 
+			List<Produto> produtos, 
 			Date data,
 			Double valorTotal, 
-			String status) {
+			Boolean status) {
 		
 		this.id = id;
 		this.numero = numero;
 		this.produtos = produtos;
-		this.clienteId = clienteId;
 		this.data = data;
 		this.valorTotal = valorTotal;
 		this.status = status;
@@ -77,20 +94,12 @@ public class Pedido {
 		this.numero = numero;
 	}
 	
-	public ArrayList<Produto> getProdutos() {
+	public List<Produto> getProdutos() {
 		return produtos;
 	}
 	
-	public void setProdutos(ArrayList<Produto> produtos) {
+	public void setProdutos(List<Produto> produtos) {
 		this.produtos = produtos;
-	}
-	
-	public Integer getClienteId() {
-		return clienteId;
-	}
-	
-	public void setClienteId(Integer clienteId) {
-		this.clienteId = clienteId;
 	}
 	
 	public Date getData() {
@@ -109,11 +118,11 @@ public class Pedido {
 		this.valorTotal = valorTotal;
 	}
 	
-	public String getStatus() {
+	public Boolean getStatus() {
 		return status;
 	}
 	
-	public void setStatus(String status) {
+	public void setStatus(Boolean status) {
 		this.status = status;
 	}
 	
@@ -121,5 +130,24 @@ public class Pedido {
 	public Boolean validoParaCadastro(){
         return(!this.produtos.isEmpty());
     }  
+	
+	public void relacionarComProduto(Produto produto) {
+		produtos.add(produto);
+	}
+
+
+	public void relacionarCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
 	
 }

@@ -3,9 +3,11 @@ package com.serratec.trabalhofinal.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.serratec.trabalhofinal.model.Pedido;
 import com.serratec.trabalhofinal.model.Produto;
 import com.serratec.trabalhofinal.model.exception.ResourceBadRequestException;
 import com.serratec.trabalhofinal.model.exception.ResourceNotFoundException;
+import com.serratec.trabalhofinal.repository.CategoriaRepository;
 import com.serratec.trabalhofinal.repository.ProdutoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ public class ProdutoService {
 	
     @Autowired
     private ProdutoRepository _repositorioProduto;
+    
+    @Autowired
+    private CategoriaRepository _repositorioCategoria;
 
     public List<Produto> obterTodos(){     
     	
@@ -71,4 +76,11 @@ public class ProdutoService {
 			Produto produtoAtualizado = this._repositorioProduto.save(produto);
 			return new ResponseEntity<>(produtoAtualizado, HttpStatus.OK);
     }
+    
+	public Produto relacionarProdutoComCategoria(Integer produto_id, Integer categoria_id) {
+		var produto = _repositorioProduto.findById(produto_id).get();
+		var categoria = _repositorioCategoria.findById(categoria_id).get();
+		produto.relacionarComCategoria(categoria);
+		return _repositorioProduto.save(produto);
+	}
 }

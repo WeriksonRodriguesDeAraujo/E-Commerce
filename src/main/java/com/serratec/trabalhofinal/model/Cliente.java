@@ -1,13 +1,26 @@
 package com.serratec.trabalhofinal.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonAutoDetect
 @Entity
 @Table(name = "cliente")
 @SequenceGenerator(name ="generator_cliente", sequenceName = "sequence_cliente", initialValue = 1, allocationSize = 1)
@@ -26,18 +39,28 @@ public class Cliente {
     @Column(nullable = false)
     private String nome;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 11, unique = true)
     private String cpf;
 
     @Column(nullable = false)
-    private Integer telefone;
+    private String telefone;
 
     @Column(nullable = false)
     private String dataDeNascimento;
     
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "endereco_id", referencedColumnName = "id")
+    private Endereco endereco;
+    
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "cliente")
+    @Autowired
+    private List<Pedido> pedidos;
+    
     public Cliente() {}
     
-    public Cliente(Integer id, String email, String senha, String nome, String cpf, Integer telefone,
+    public Cliente(Integer id, String email, String senha, String nome, String cpf, String telefone,
 			String dataDeNascimento) {
 		this.id = id;
 		this.email = email;
@@ -85,11 +108,11 @@ public class Cliente {
         return cpf;
     }
 
-    public Integer getTelefone() {
+    public String getTelefone() {
         return telefone;
     }
     
-    public void setTelefone(Integer telefone) {
+    public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
     
@@ -100,5 +123,15 @@ public class Cliente {
     public void setDataDeNascimento(String dataDeNascimento) {
         this.dataDeNascimento = dataDeNascimento;
     }
+
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
+    
+    
     //#endregion
 }

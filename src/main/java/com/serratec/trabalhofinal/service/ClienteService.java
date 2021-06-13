@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import com.serratec.trabalhofinal.model.Cliente;
+import com.serratec.trabalhofinal.model.Endereco;
 import com.serratec.trabalhofinal.model.exception.ResourceBadRequestException;
 import com.serratec.trabalhofinal.model.exception.ResourceNotFoundException;
 import com.serratec.trabalhofinal.repository.ClienteRepository;
+import com.serratec.trabalhofinal.repository.EnderecoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,9 +19,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 public class ClienteService {
-    
+	
     @Autowired
     private ClienteRepository _repositorioCliente;
+    
+    @Autowired
+    private EnderecoService servicoEndereco;
+    
+    @Autowired
+    private EnderecoRepository _repositorioEndereco;
 
     public List<Cliente> obterTodos(){        
         return this._repositorioCliente.findAll();        
@@ -42,8 +50,12 @@ public class ClienteService {
     		
     		throw new ResourceBadRequestException("Campos obrigatorios não informados ou vazios");
     	}
+    	
     	cliente.setId(null);
-     	Cliente clienteNovo = this._repositorioCliente.save(cliente);	
+     	Endereco endereco = servicoEndereco.ObterEnderecoPorCep(cliente.getEndereco().getCep());
+     	cliente.setEndereco(endereco);
+     	this._repositorioEndereco.save(endereco);
+     	Cliente clienteNovo = this._repositorioCliente.save(cliente);
         return new ResponseEntity<>(clienteNovo, HttpStatus.CREATED);
     }
 
@@ -64,6 +76,9 @@ public class ClienteService {
 			throw new ResourceNotFoundException("Cliente não encontrado com o id " + id);
 	    }  
 		cliente.setId(id);
+     	Endereco endereco = servicoEndereco.ObterEnderecoPorCep(cliente.getEndereco().getCep());
+     	cliente.setEndereco(endereco);
+     	this._repositorioEndereco.save(endereco);
 		this._repositorioCliente.save(cliente);
 		return new ResponseEntity<>(clienteExiste, HttpStatus.OK);
     }
