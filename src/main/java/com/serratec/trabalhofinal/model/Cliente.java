@@ -2,6 +2,7 @@ package com.serratec.trabalhofinal.model;
 
 import java.util.List;
 
+import java.util.Collection;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,6 +14,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,7 +31,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 @Table(name = "cliente")
 @SequenceGenerator(name ="generator_cliente", sequenceName = "sequence_cliente", initialValue = 1, allocationSize = 1)
-public class Cliente {
+public class Cliente implements UserDetails {
 
     @Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generator_cliente")
@@ -34,6 +41,7 @@ public class Cliente {
     private String email;
 
     @Column(nullable = false)
+    @JsonIgnore
     private String senha;
 
     @Column(nullable = false)
@@ -134,4 +142,47 @@ public class Cliente {
     
     
     //#endregion
+    
+    
+    /* User Details Implements */
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return null;
+	}
+
+	@Override
+	@JsonIgnore
+	public String getPassword() {
+		return senha;
+	}
+
+	@Override
+	@JsonIgnore
+	public String getUsername() {
+		return email;
+	}
+
+	@Override
+	@JsonIgnore
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	@JsonIgnore
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	@JsonIgnore
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	@JsonIgnore
+	public boolean isEnabled() {
+		return true;
+	}
 }
