@@ -1,16 +1,24 @@
 package com.serratec.trabalhofinal.service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import com.serratec.trabalhofinal.dto.LoginResponse;
 import com.serratec.trabalhofinal.model.Cliente;
 import com.serratec.trabalhofinal.model.exception.ResourceBadRequestException;
 import com.serratec.trabalhofinal.model.exception.ResourceNotFoundException;
 import com.serratec.trabalhofinal.repository.ClienteRepository;
+import com.serratec.trabalhofinal.security.JWTService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +28,10 @@ public class ClienteService {
     
     @Autowired
     private ClienteRepository _repositorioCliente;
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    
 
     public List<Cliente> obterTodos(){        
         return this._repositorioCliente.findAll();        
@@ -45,6 +57,13 @@ public class ClienteService {
     		throw new ResourceBadRequestException("Campos obrigatorios não informados ou vazios");
     	}
     	cliente.setId(null);
+    	if(_repositorioCliente.findByEmail(cliente.getEmail()).isPresent()) {
+    		
+    	}
+    	
+    	String senha = passwordEncoder.encode(cliente.getSenha());
+    	cliente.setSenha(senha);
+    	
      	Cliente clienteNovo = this._repositorioCliente.save(cliente);	
         return new ResponseEntity<>(clienteNovo, HttpStatus.CREATED);
     }
@@ -71,4 +90,27 @@ public class ClienteService {
 		this._repositorioCliente.save(cliente);
 		return new ResponseEntity<>(clienteExiste, HttpStatus.OK);
     }
+    
+    private static final String headerPrefix = "Bearer ";
+    
+    @Autowired
+    private JWTService jwtService;
+    
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    
+    public LoginResponse logar(String email, String senha) {
+    
+    	Authentication autenticacao = authenticationManager.authenticate(
+    			new UsernamePasswordAuthenticationToken(email, senha, Collections.emptyList()));
+    	
+    	SecurityContextHolder.getContext().setAuthentication(autenticacao);
+    	
+    	String token = headerPrefix + jwtService.gerarToken(autenticacao);
+    	
+    	var usuario = _repositorioCliente.findByEmail(email);
+    	return new LoginResponse(token, usuario.get());
+    }
+    
+    
 }
