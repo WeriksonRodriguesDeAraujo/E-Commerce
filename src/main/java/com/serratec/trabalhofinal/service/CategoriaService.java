@@ -23,7 +23,7 @@ public class CategoriaService {
 	@Autowired
 	private CategoriaRepository _repositorioCategoria;
 	
-public List<Categoria> obterTodos(){
+	public List<Categoria> obterTodos(){
 		
 		return this._repositorioCategoria.findAll();
 	}
