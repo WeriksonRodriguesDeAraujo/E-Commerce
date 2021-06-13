@@ -28,13 +28,13 @@ public class ClienteController {
     @Autowired
     ClienteService _servicoCliente;
 
-    @ApiOperation(value = "Retorna todos os clientes")
+    @ApiOperation(value = "Retorna todos os clientes cadastrados")
     @GetMapping
     public List<Cliente> obterTodos(){
         return _servicoCliente.obterTodos();
     }
 
-    @ApiOperation(value = "Retor os clientes  de acordo com o Id")
+    @ApiOperation(value = "Retorna os clientes cadastrados de acordo com o Id")
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Cliente>> obterPorId(@PathVariable(value = "id") Integer id){
         return _servicoCliente.obterPorId(id);

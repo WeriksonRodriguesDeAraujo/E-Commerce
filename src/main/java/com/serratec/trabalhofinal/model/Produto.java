@@ -32,8 +32,7 @@ public class Produto {
     private Integer quantidadeEmEstoque;
 	
     private Date dataDeCadastro;
-	
-    // tem que fazer a imagem aqui
+    
 	
 	public Produto() {}
 
@@ -95,5 +94,6 @@ public class Produto {
     public void setDataDeCadastro(Date dataDeCadastro) {
         this.dataDeCadastro = dataDeCadastro;
     }
+    
     //#endregion
 }

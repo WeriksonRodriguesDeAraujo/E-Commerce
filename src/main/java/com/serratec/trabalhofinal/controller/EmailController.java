@@ -18,7 +18,6 @@ public class EmailController {
 	@Autowired
 	Mailler mailler;
 
-
   @ApiOperation(value = "Envia um email")
   @PostMapping
   public String enviarEmail(@RequestBody MensagemEmail email) {			
