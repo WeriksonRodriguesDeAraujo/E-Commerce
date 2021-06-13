@@ -30,6 +30,7 @@ public class PedidoController {
 	@Autowired
     PedidoService _servicoPedido;
 	
+
 	@ApiOperation(value = "Retorna todos os pedidos")
     @GetMapping
     public List<Pedido> obterTodos(){
@@ -53,7 +54,18 @@ public class PedidoController {
     public ResponseEntity<Optional<Pedido>> atualizar(@PathVariable(value = "id") Integer id, @RequestBody Pedido pedido){
         return _servicoPedido.atualizar(id, pedido);
     }
-	
+    
+    @PutMapping("/{pedido_id}/produto/{produto_id}")
+    public Pedido relacionarPedidoComProduto(@PathVariable Integer pedido_id, @PathVariable Integer produto_id) {
+    	return _servicoPedido.relacionarPedidoComProduto(pedido_id, produto_id);
+    }
+    
+    @PutMapping("/{pedido_id}/cliente/{cliente_id}")
+    public Pedido relacionarPedidoComCliente(@PathVariable Integer pedido_id, @PathVariable Integer cliente_id) {
+    	return _servicoPedido.relacionarPedidoComCliente(pedido_id, cliente_id);
+    }
+
+
 	@ApiOperation(value = "Deleta um pedido de acordo com o Id")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletar(@PathVariable(value = "id") Integer id){

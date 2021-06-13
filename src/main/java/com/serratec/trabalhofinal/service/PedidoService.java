@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.serratec.trabalhofinal.model.Pedido;
+import com.serratec.trabalhofinal.model.Produto;
 import com.serratec.trabalhofinal.model.exception.ResourceBadRequestException;
 import com.serratec.trabalhofinal.model.exception.ResourceNotFoundException;
+import com.serratec.trabalhofinal.repository.ClienteRepository;
 import com.serratec.trabalhofinal.repository.PedidoRepository;
+import com.serratec.trabalhofinal.repository.ProdutoRepository;
 
 
 @Service
@@ -22,6 +25,12 @@ public class PedidoService {
 	
 	@Autowired
 	private PedidoRepository _repositorioPedido;
+	
+	@Autowired
+	private ProdutoRepository _repositorioProduto;
+	
+	@Autowired
+	private ClienteRepository _repositorioCliente;
 	
 	public List<Pedido> obterTodos(){
 		
@@ -43,9 +52,9 @@ public class PedidoService {
 	public ResponseEntity<Pedido> adicionar(@RequestBody Pedido pedido) {
 		pedido.setId(null);
 		
-		if(!pedido.validoParaCadastro()) {
-			throw new ResourceBadRequestException("Para cadastrar, informe o(s) produto(s) do pedido!");
-		}
+		//if(!pedido.validoParaCadastro()) {
+		//	throw new ResourceBadRequestException("Para cadastrar, informe o(s) produto(s) do pedido!");
+		//}
 		
 		pedido = _repositorioPedido.save(pedido);
 		return new ResponseEntity<>(pedido, HttpStatus.CREATED);
@@ -56,6 +65,10 @@ public class PedidoService {
 		pedido.setId(id);
 		
 		var pedidoValido = _repositorioPedido.findById(id);
+		
+		if(pedidoValido.get().getStatus() == true) {
+		throw new ResourceBadRequestException("Usei essa exception só como base") ;//new ResourceForbiddenException("Pedido já finalizado");
+		}
 		
 		if(pedidoValido.isEmpty()) {
 			throw new ResourceNotFoundException("Não existe pedido com o id informado: " + id);
@@ -75,6 +88,20 @@ public class PedidoService {
 		
 		this._repositorioPedido.deleteById(id);
 		return new ResponseEntity<>(null, HttpStatus.OK);
+	}
+	
+	public Pedido relacionarPedidoComProduto(Integer pedido_id, Integer produto_id){
+		var pedido = _repositorioPedido.findById(pedido_id).get();
+		var produto = _repositorioProduto.findById(produto_id).get();
+		pedido.relacionarComProduto(produto);
+		return  _repositorioPedido.save(pedido);
+	}
+	
+	public Pedido relacionarPedidoComCliente(Integer cliente_id, Integer pedido_id) {
+		var pedido = _repositorioPedido.findById(pedido_id).get();
+		var cliente = _repositorioCliente.findById(cliente_id).get();
+		pedido.relacionarCliente(cliente);
+		return _repositorioPedido.save(pedido);
 	}
 	
 }

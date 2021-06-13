@@ -24,6 +24,9 @@ public class EnderecoService {
         
             var endereco = monoEndereco.block();
 
+            //var nomeEndereco = new Endereco();
+            //nomeEndereco.setRua(monoEndereco.));
+            
         return endereco;
     }
 }

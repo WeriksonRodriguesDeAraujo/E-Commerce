@@ -6,9 +6,11 @@ import java.util.Optional;
 
 import com.serratec.trabalhofinal.dto.LoginResponse;
 import com.serratec.trabalhofinal.model.Cliente;
+import com.serratec.trabalhofinal.model.Endereco;
 import com.serratec.trabalhofinal.model.exception.ResourceBadRequestException;
 import com.serratec.trabalhofinal.model.exception.ResourceNotFoundException;
 import com.serratec.trabalhofinal.repository.ClienteRepository;
+import com.serratec.trabalhofinal.repository.EnderecoRepository;
 import com.serratec.trabalhofinal.security.JWTService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +27,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 public class ClienteService {
-    
+	
     @Autowired
     private ClienteRepository _repositorioCliente;
     
     @Autowired
+
+    private EnderecoService servicoEndereco;
+    
+    @Autowired
+    private EnderecoRepository _repositorioEndereco;
+
     private PasswordEncoder passwordEncoder;
     
+//08048203f5fac8ea1795bb623ebc23b4ca3352b1
 
     public List<Cliente> obterTodos(){        
         return this._repositorioCliente.findAll();        
@@ -56,15 +65,19 @@ public class ClienteService {
     		
     		throw new ResourceBadRequestException("Campos obrigatorios não informados ou vazios");
     	}
+    	
     	cliente.setId(null);
+     	Endereco endereco = servicoEndereco.ObterEnderecoPorCep(cliente.getEndereco().getCep());
+     	cliente.setEndereco(endereco);
+     	this._repositorioEndereco.save(endereco);
+     	
     	if(_repositorioCliente.findByEmail(cliente.getEmail()).isPresent()) {
     		
     	}
     	
     	String senha = passwordEncoder.encode(cliente.getSenha());
     	cliente.setSenha(senha);
-    	
-     	Cliente clienteNovo = this._repositorioCliente.save(cliente);	
+     	Cliente clienteNovo = this._repositorioCliente.save(cliente);
         return new ResponseEntity<>(clienteNovo, HttpStatus.CREATED);
     }
     
@@ -87,6 +100,9 @@ public class ClienteService {
 			throw new ResourceNotFoundException("Cliente não encontrado com o id " + id);
 	    }  
 		cliente.setId(id);
+     	Endereco endereco = servicoEndereco.ObterEnderecoPorCep(cliente.getEndereco().getCep());
+     	cliente.setEndereco(endereco);
+     	this._repositorioEndereco.save(endereco);
 		this._repositorioCliente.save(cliente);
 		return new ResponseEntity<>(clienteExiste, HttpStatus.OK);
     }
