@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.serratec.trabalhofinal.model.Pedido;
 import com.serratec.trabalhofinal.service.PedidoService;
 
+import io.swagger.annotations.ApiOperation;
+
 
 @RestController
 @CrossOrigin("*")
@@ -27,27 +29,32 @@ public class PedidoController {
 	
 	@Autowired
     PedidoService _servicoPedido;
-
+	
+	@ApiOperation(value = "Retorna todos os pedidos")
     @GetMapping
     public List<Pedido> obterTodos(){
         return _servicoPedido.obterTodos();
     }
-
+	
+	@ApiOperation(value = "Retorna um pedido de acordo com o Id")
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Pedido>> obterPorId(@PathVariable(value = "id") Integer id){
         return _servicoPedido.obterPorId(id);
     }
 
+	@ApiOperation(value = "Adiciona um novo pedido")
     @PostMapping
     public ResponseEntity<Pedido> adicionar(@RequestBody Pedido pedido){
         return _servicoPedido.adicionar(pedido);
     }
     
+	@ApiOperation(value = "Atualiza as informações de um pedido de acordo com o Id")
     @PutMapping("/{id}")
     public ResponseEntity<Optional<Pedido>> atualizar(@PathVariable(value = "id") Integer id, @RequestBody Pedido pedido){
         return _servicoPedido.atualizar(id, pedido);
     }
-
+	
+	@ApiOperation(value = "Deleta um pedido de acordo com o Id")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletar(@PathVariable(value = "id") Integer id){
         return _servicoPedido.deletar(id);
