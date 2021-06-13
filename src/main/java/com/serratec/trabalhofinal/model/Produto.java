@@ -56,7 +56,6 @@ public class Produto {
 	private Date dataDeCadastro;
 	
     // tem que fazer a imagem aqui
-	
 	public Produto() {
 		this.dataDeCadastro = new Date();
 	}
@@ -141,6 +140,7 @@ public class Produto {
 	public void relacionarComCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
+
     
     //#endregion
 }

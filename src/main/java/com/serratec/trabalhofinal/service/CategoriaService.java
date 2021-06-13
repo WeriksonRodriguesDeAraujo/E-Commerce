@@ -40,6 +40,16 @@ public class CategoriaService {
 	}
 	
 	
+	public ResponseEntity<List<Categoria>> obterPorNome(String nome){
+    	List<Categoria> categoria = _repositorioCategoria.findByNomeContainingIgnoreCase(nome);
+		
+    	if(categoria.isEmpty()) {
+        	throw new ResourceNotFoundException("Não foi encontrado produto com o nome:" + nome);
+       }
+		return new ResponseEntity<>(categoria, HttpStatus.OK);
+	}
+	
+	
 	public ResponseEntity<Categoria> adicionar(@RequestBody Categoria categoria) {
 		categoria.setId(null);
 		

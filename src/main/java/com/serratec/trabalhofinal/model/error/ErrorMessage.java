@@ -7,6 +7,7 @@ public class ErrorMessage {
 	private String message;
 	private String developerMessage;
 	private Long timestamp;
+	
 
 	public ErrorMessage(String title, Integer status, String message, String developerMessage, Long timestamp) {
 		this.title = title;
@@ -16,19 +17,25 @@ public class ErrorMessage {
 		this.timestamp = timestamp;
 	}
 	
+	
 	public String getTitle() {
 		return title;
 	}
+	
 	public Integer getStatus() {
 		return status;
 	}
+	
 	public String getMessage() {
 		return message;
 	}
+	
 	public String getDeveloperMessage() {
 		return developerMessage;
 	}
+	
 	public Long getTimestamp() {
 		return timestamp;
 	}
+	
 }

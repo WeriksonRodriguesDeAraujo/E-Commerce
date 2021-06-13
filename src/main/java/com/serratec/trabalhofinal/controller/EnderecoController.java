@@ -14,11 +14,10 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api/endereco")
-public class EndereoController {
+public class EnderecoController {
     
     @Autowired
     private EnderecoService _servicoEndereco;
-
 
     @ApiOperation(value = "Obtem o endereço completo do cliente pelo CEP")
     @GetMapping("/{cep}")

@@ -46,6 +46,7 @@ public class ClienteService {
         return this._repositorioCliente.findAll();        
     }
 
+    
     public ResponseEntity<Optional<Cliente>> obterPorId(@PathVariable(value = "id") Integer id){
         var cliente = _repositorioCliente.findById(id);    
         
@@ -54,6 +55,7 @@ public class ClienteService {
         } 
         return new ResponseEntity<>(cliente, HttpStatus.OK);
     }
+    
 
     public ResponseEntity<Cliente> adicionar(@RequestBody Cliente cliente) {
     	if(cliente.getNome() == "" || cliente.getNome() == null ||
@@ -78,6 +80,7 @@ public class ClienteService {
      	Cliente clienteNovo = this._repositorioCliente.save(cliente);
         return new ResponseEntity<>(clienteNovo, HttpStatus.CREATED);
     }
+    
 
     public ResponseEntity<?> deletar(@PathVariable(value = "id") Integer id) {
     	var encontrado = _repositorioCliente.findById(id); 
@@ -89,6 +92,7 @@ public class ClienteService {
 		return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
+    
     public ResponseEntity<Optional<Cliente>> atualizar(@PathVariable(value = "id") Integer id, @RequestBody Cliente cliente) {
 		var clienteExiste = _repositorioCliente.findById(id);    
 		

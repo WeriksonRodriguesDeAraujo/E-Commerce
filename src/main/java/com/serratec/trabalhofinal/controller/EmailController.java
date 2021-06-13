@@ -22,7 +22,6 @@ public class EmailController {
 	@Autowired
 	PedidoService _servicoPedido;
 
-
   @ApiOperation(value = "Envia um email")
   @PostMapping
   public String enviarEmail(@RequestBody MensagemEmail email) {			
