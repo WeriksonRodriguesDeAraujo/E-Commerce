@@ -37,6 +37,7 @@ public class ClienteService {
     @Autowired
     private EnderecoRepository _repositorioEndereco;
 
+
 	  @Autowired
     private JWTService jwtService;
 
@@ -44,6 +45,7 @@ public class ClienteService {
     private AuthenticationManager authenticationManager;
 	
 	  @Autowired
+
     private PasswordEncoder passwordEncoder;
 
 	  private static final String headerPrefix = "Bearer ";
