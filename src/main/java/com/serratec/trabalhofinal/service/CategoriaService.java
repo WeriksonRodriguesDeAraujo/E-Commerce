@@ -23,7 +23,7 @@ public class CategoriaService {
 	@Autowired
 	private CategoriaRepository _repositorioCategoria;
 	
-public List<Categoria> obterTodos(){
+	public List<Categoria> obterTodos(){
 		
 		return this._repositorioCategoria.findAll();
 	}
@@ -36,6 +36,16 @@ public List<Categoria> obterTodos(){
 			throw new ResourceNotFoundException("Não foi encontrada categoria com o id informado: " + id);
 		}
 		
+		return new ResponseEntity<>(categoria, HttpStatus.OK);
+	}
+	
+	
+	public ResponseEntity<List<Categoria>> obterPorNome(String nome){
+    	List<Categoria> categoria = _repositorioCategoria.findByNomeContainingIgnoreCase(nome);
+		
+    	if(categoria.isEmpty()) {
+        	throw new ResourceNotFoundException("Não foi encontrado produto com o nome:" + nome);
+       }
 		return new ResponseEntity<>(categoria, HttpStatus.OK);
 	}
 	

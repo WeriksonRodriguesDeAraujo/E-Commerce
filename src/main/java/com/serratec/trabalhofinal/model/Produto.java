@@ -1,14 +1,25 @@
 package com.serratec.trabalhofinal.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "produto")
@@ -31,20 +42,34 @@ public class Produto {
 	@Column(nullable = false)
     private Integer quantidadeEmEstoque;
 	
-    private Date dataDeCadastro;
+	@JsonIgnore
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "produtos")
+	@Autowired
+	private List<Pedido> pedidos;
+	
+	@JsonIgnore
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "categoria_id", referencedColumnName = "id")
+	private Categoria categoria;
+
+	private Date dataDeCadastro;
 	
     // tem que fazer a imagem aqui
-	
-	public Produto() {}
+	public Produto() {
+		this.dataDeCadastro = new Date();
+	}
 
 	public Produto(Integer id, String nome, String descricao, Double preco, Integer quantidadeEmEstoque,
-			Date dataDeCadastro) {
+			Date dataDeCadastro, List<Pedido> pedidos, Categoria categoria) {
 		this.id = id;
 		this.nome = nome;
 		this.descricao = descricao;
 		this.preco = preco;
 		this.quantidadeEmEstoque = quantidadeEmEstoque;
 		this.dataDeCadastro = new Date();
+		this.pedidos = pedidos;
+		this.categoria = categoria;
 	}
 
 	//#region Getters e Setters
@@ -95,5 +120,27 @@ public class Produto {
     public void setDataDeCadastro(Date dataDeCadastro) {
         this.dataDeCadastro = dataDeCadastro;
     }
+
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
+    
+    public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
+
+	public void relacionarComCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
+
+    
     //#endregion
 }

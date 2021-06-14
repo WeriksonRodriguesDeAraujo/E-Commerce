@@ -1,7 +1,10 @@
 package com.serratec.trabalhofinal.controller;
 
+import java.util.Arrays;
+
 import com.serratec.trabalhofinal.model.email.Mailler;
 import com.serratec.trabalhofinal.model.email.MensagemEmail;
+import com.serratec.trabalhofinal.service.PedidoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,18 +20,28 @@ public class EmailController {
 
 	@Autowired
 	Mailler mailler;
-
+	
+	@Autowired
+	PedidoService _servicoPedido;
 
   @ApiOperation(value = "Envia um email")
   @PostMapping
-  public String enviarEmail(@RequestBody MensagemEmail email) {			
+  public String enviarEmail() {			
+	  
+	  var email = new MensagemEmail(
+			  "Informações do Pedido",
+			  "Data de Entrega: 17/06/2021 " + _servicoPedido.obterTodos().size(),
+        "E-Commerce <serratecdev@gmail.com>",
+        Arrays.asList("Dudu <luizeduardo15012@gmail.com>"));
+        
+	  
     try {
       mailler.enviar(email);
-      return "Deu certo";
+      return "Email enviado";
 
     } catch (Exception e) {
       e.printStackTrace();
-      return "Deu ruim";
+      return "Erro no envio";
     }
   }
 }

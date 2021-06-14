@@ -39,6 +39,7 @@ public class ApiHandlerException {
 		return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
 	}
 	
+	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<?> HandleResourceBadRequestException(Exception exception) {
 		

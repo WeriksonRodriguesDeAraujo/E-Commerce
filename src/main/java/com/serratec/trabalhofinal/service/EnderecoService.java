@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import io.netty.handler.codec.http.HttpMethod;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -14,7 +13,6 @@ public class EnderecoService {
     
     @Autowired
     private WebClient _cepWebCliente;
-
 
     public Endereco ObterEnderecoPorCep(String cep){
 
@@ -26,6 +24,9 @@ public class EnderecoService {
         
             var endereco = monoEndereco.block();
 
+            //var nomeEndereco = new Endereco();
+            //nomeEndereco.setRua(monoEndereco.));
+            
         return endereco;
     }
 }
