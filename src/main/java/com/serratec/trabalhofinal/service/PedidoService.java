@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.serratec.trabalhofinal.controller.EmailController;
 import com.serratec.trabalhofinal.model.Pedido;
 import com.serratec.trabalhofinal.model.Produto;
 import com.serratec.trabalhofinal.model.exception.ResourceBadRequestException;
@@ -32,6 +33,9 @@ public class PedidoService {
 	@Autowired
 	private ClienteRepository _repositorioCliente;
 	
+	@Autowired
+	private EmailController controllerEmail;
+	
 	public List<Pedido> obterTodos(){
 		
 		return this._repositorioPedido.findAll();	
@@ -51,7 +55,7 @@ public class PedidoService {
 	
 	public ResponseEntity<Pedido> adicionar(@RequestBody Pedido pedido) {
 		pedido.setId(null);
-		
+		pedido.setStatus(false);
 		//if(!pedido.validoParaCadastro()) {
 		//	throw new ResourceBadRequestException("Para cadastrar, informe o(s) produto(s) do pedido!");
 		//}
@@ -75,6 +79,9 @@ public class PedidoService {
 		}
 		
 		this._repositorioPedido.save(pedido);
+		if(pedido.getStatus() == true) {
+			controllerEmail.enviarEmailPedido(pedido);
+		}
 		return new ResponseEntity<>(pedidoValido, HttpStatus.OK);	
 	}
 	
@@ -93,14 +100,18 @@ public class PedidoService {
 	public Pedido relacionarPedidoComProduto(Integer pedido_id, Integer produto_id){
 		var pedido = _repositorioPedido.findById(pedido_id).get();
 		var produto = _repositorioProduto.findById(produto_id).get();
+		
 		pedido.relacionarComProduto(produto);
+		
 		return  _repositorioPedido.save(pedido);
 	}
 	
-	public Pedido relacionarPedidoComCliente(Integer cliente_id, Integer pedido_id) {
+	public Pedido relacionarPedidoComCliente(Integer pedido_id, Integer cliente_id) {
 		var pedido = _repositorioPedido.findById(pedido_id).get();
 		var cliente = _repositorioCliente.findById(cliente_id).get();
+		
 		pedido.relacionarCliente(cliente);
+		
 		return _repositorioPedido.save(pedido);
 	}
 	

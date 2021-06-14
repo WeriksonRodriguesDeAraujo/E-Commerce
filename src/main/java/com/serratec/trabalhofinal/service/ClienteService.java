@@ -32,12 +32,12 @@ public class ClienteService {
     private ClienteRepository _repositorioCliente;
     
     @Autowired
-
     private EnderecoService servicoEndereco;
     
     @Autowired
     private EnderecoRepository _repositorioEndereco;
 
+    @Autowired
     private PasswordEncoder passwordEncoder;
     
 //08048203f5fac8ea1795bb623ebc23b4ca3352b1
