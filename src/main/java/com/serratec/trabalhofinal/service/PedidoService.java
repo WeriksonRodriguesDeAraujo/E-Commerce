@@ -66,7 +66,7 @@ public class PedidoService {
 		var pedidoValido = _repositorioPedido.findById(id);
 		
 		if(pedidoValido.get().getStatus() == true) {
-			throw new ResourceBadRequestException("Usei essa exception só como base") ;//new ResourceForbiddenException("Pedido já finalizado");
+			throw new ResourceBadRequestException("Erro ao atualizar o pedido") ;//new ResourceForbiddenException("Pedido já finalizado");
 		}
 		
 		if(pedidoValido.isEmpty()) {
