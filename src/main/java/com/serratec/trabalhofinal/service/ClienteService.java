@@ -123,17 +123,4 @@ public class ClienteService {
     	var usuario = _repositorioCliente.findByEmail(email);
     	return new LoginResponse(token, usuario.get());
     }
-    
-    public LoginResponse logar(String email, String senha) {
-    
-    	Authentication autenticacao = authenticationManager.authenticate(
-    			new UsernamePasswordAuthenticationToken(email, senha, Collections.emptyList()));
-    	
-    	SecurityContextHolder.getContext().setAuthentication(autenticacao);
-    	
-    	String token = headerPrefix + jwtService.gerarToken(autenticacao);
-    	
-    	var usuario = _repositorioCliente.findByEmail(email);
-    	return new LoginResponse(token, usuario.get());
-    }
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.serratec.trabalhofinal.controller.EmailController;
 import com.serratec.trabalhofinal.model.Pedido;
 import com.serratec.trabalhofinal.model.exception.ResourceBadRequestException;
+import com.serratec.trabalhofinal.model.exception.ResourceForbiddenException;
 import com.serratec.trabalhofinal.model.exception.ResourceNotFoundException;
 import com.serratec.trabalhofinal.repository.ClienteRepository;
 import com.serratec.trabalhofinal.repository.PedidoRepository;
@@ -66,7 +67,9 @@ public class PedidoService {
 		var pedidoValido = _repositorioPedido.findById(id);
 		
 		if(pedidoValido.get().getStatus() == true) {
-			throw new ResourceBadRequestException("Erro ao atualizar o pedido") ;//new ResourceForbiddenException("Pedido já finalizado");
+
+			throw new ResourceForbiddenException("Pedido já finalizado");
+
 		}
 		
 		if(pedidoValido.isEmpty()) {
@@ -108,5 +111,4 @@ public class PedidoService {
 		
 		return _repositorioPedido.save(pedido);
 	}
-	
 }
