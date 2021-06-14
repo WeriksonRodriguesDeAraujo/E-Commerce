@@ -26,6 +26,7 @@ public class EmailController {
 
   @ApiOperation(value = "Envia um email")
   @PostMapping
+
   public String enviarEmail() {			
 	  
 	  var email = new MensagemEmail(
@@ -34,7 +35,8 @@ public class EmailController {
         "E-Commerce <serratecdev@gmail.com>",
         Arrays.asList("Dudu <luizeduardo15012@gmail.com>"));
         
-	  
+  public String enviarEmail(@RequestBody MensagemEmail email) {			
+
     try {
       mailler.enviar(email);
       return "Email enviado";
