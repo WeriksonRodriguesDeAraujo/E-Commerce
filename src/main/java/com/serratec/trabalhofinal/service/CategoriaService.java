@@ -16,7 +16,6 @@ import com.serratec.trabalhofinal.model.exception.ResourceBadRequestException;
 import com.serratec.trabalhofinal.model.exception.ResourceNotFoundException;
 import com.serratec.trabalhofinal.repository.CategoriaRepository;
 
-
 @Service
 public class CategoriaService {
 	
@@ -27,7 +26,6 @@ public class CategoriaService {
 		
 		return this._repositorioCategoria.findAll();
 	}
-
 		
 	public ResponseEntity<Optional<Categoria>> obterPorId(@PathVariable("id") Integer id) {
 		Optional<Categoria> categoria = this._repositorioCategoria.findById(id);
@@ -39,7 +37,6 @@ public class CategoriaService {
 		return new ResponseEntity<>(categoria, HttpStatus.OK);
 	}
 	
-	
 	public ResponseEntity<List<Categoria>> obterPorNome(String nome){
     	List<Categoria> categoria = _repositorioCategoria.findByNomeContainingIgnoreCase(nome);
 		
@@ -48,8 +45,7 @@ public class CategoriaService {
        }
 		return new ResponseEntity<>(categoria, HttpStatus.OK);
 	}
-	
-	
+
 	public ResponseEntity<Categoria> adicionar(@RequestBody Categoria categoria) {
 		categoria.setId(null);
 		
@@ -60,7 +56,6 @@ public class CategoriaService {
 		var novaCategoria = _repositorioCategoria.save(categoria);
 		return new ResponseEntity<>(novaCategoria, HttpStatus.CREATED);
 	}
-	
 	
 	public ResponseEntity<Optional<Categoria>> atualizar(@PathVariable("id") Integer id, @RequestBody Categoria categoria){
 		categoria.setId(id);
@@ -75,7 +70,6 @@ public class CategoriaService {
 		return new ResponseEntity<>(categoriaValida, HttpStatus.OK);	
 	}
 	
-	
 	public ResponseEntity<?> deletar(@PathVariable("id") Integer id){
 		var existe = _repositorioCategoria.findById(id);
 		
@@ -86,5 +80,4 @@ public class CategoriaService {
 		this._repositorioCategoria.deleteById(id);
 		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
-	
 }

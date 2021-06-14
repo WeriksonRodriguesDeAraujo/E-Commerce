@@ -1,11 +1,7 @@
 package com.serratec.trabalhofinal.model;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,9 +16,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 
 @Entity 
 @Table(name = "pedido")
@@ -40,7 +34,6 @@ public class Pedido {
 	@JoinTable(name = "produtos_pedidos",
 			   joinColumns = {@JoinColumn(name = "pedido_id")},
 			   inverseJoinColumns = {@JoinColumn(name = "produto_id")})
-	@Autowired
 	private List<Produto> produtos;
 	
 	private Date data;
@@ -60,7 +53,6 @@ public class Pedido {
 		this.data = new Date();
 	}
 
-	
 	public Pedido(
 			Integer id, 
 			Integer numero, 
@@ -76,7 +68,6 @@ public class Pedido {
 		this.valorTotal = valorTotal;
 		this.status = status;
 	}
-	
 	
 	public Integer getId() {
 		return id;
@@ -114,10 +105,6 @@ public class Pedido {
 		return valorTotal;
 	}
 	
-	public void setValorTotal(Double valorTotal) {
-		this.valorTotal = valorTotal;
-	}
-	
 	public Boolean getStatus() {
 		return status;
 	}
@@ -126,6 +113,14 @@ public class Pedido {
 		this.status = status;
 	}
 	
+	public Cliente getCliente() {
+		return cliente;
+	}
+	
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
 	
 	public Boolean validoParaCadastro(){
         return(!this.produtos.isEmpty());
@@ -135,19 +130,7 @@ public class Pedido {
 		produtos.add(produto);
 	}
 
-
 	public void relacionarCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
-
-
-	public Cliente getCliente() {
-		return cliente;
-	}
-
-
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
-	
 }

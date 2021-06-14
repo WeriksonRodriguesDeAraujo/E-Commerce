@@ -1,6 +1,5 @@
 package com.serratec.trabalhofinal.dto;
 
-
 public class LoginRequest {
 
 	private String email;
@@ -23,6 +22,4 @@ public class LoginRequest {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	
-	
 }

@@ -17,15 +17,11 @@ import javax.persistence.Table;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 @JsonAutoDetect
 @Entity
@@ -34,7 +30,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Cliente implements UserDetails {
 
     @Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generator_cliente")
+	  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "generator_cliente")
     private Integer id;
 
     @Column(nullable = false)
@@ -131,19 +127,60 @@ public class Cliente implements UserDetails {
         this.dataDeNascimento = dataDeNascimento;
     }
 
-	public Endereco getEndereco() {
-		return endereco;
-	}
+    public Endereco getEndereco() {
+      return endereco;
+    }
 
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
-	}
-    
-    
+    public void setEndereco(Endereco endereco) {
+      this.endereco = endereco;
+    }
+
     //#endregion
-    
-    
-    /* User Details Implements */
+
+	 public boolean isValid(String cpfCnpj) {
+        	this.cpf=cnpj;
+            return (isValidCPF(cpfCnpj) || isValidCNPJ(cpfCnpj));
+    }
+
+    private int calcularDigito(String str, int[] peso) {
+        int soma = 0;
+        for (int indice=str.length()-1, digito; indice >= 0; indice-- ) {
+            digito = Integer.parseInt(str.substring(indice,indice+1));
+            soma += digito*peso[peso.length-str.length()+indice];
+        }
+        soma = 11 - soma % 11;
+        return soma > 9 ? 0 : soma;
+    }
+
+    private String padLeft(String text, char character) {
+        return String.format("%11s", text).replace(' ', character);
+    }
+
+    private boolean isValidCPF(String cpf) {
+      this.cpf=cpf;
+        cpf = cpf.trim().replace(".", "").replace("-", "");
+        if ((cpf==null) || (cpf.length()!=11)) return false;
+
+        for (int j = 0; j < 10; j++)
+            if (padLeft(Integer.toString(j), Character.forDigit(j, 10)).equals(cpf))
+                return false;
+
+        Integer digito1 = calcularDigito(cpf.substring(0,9), pesoCPF);
+        Integer digito2 = calcularDigito(cpf.substring(0,9) + digito1, pesoCPF);
+        return cpf.equals(cpf.substring(0,9) + digito1.toString() + digito2.toString());
+    }
+
+    private boolean isValidCNPJ(String cnpj) {
+      this.cpf=cnpj;
+        cnpj = cnpj.trim().replace(".", "").replace("-", "");
+        if ((cnpj==null)||(cnpj.length()!=14)) return false;
+
+        Integer digito1 = calcularDigito(cnpj.substring(0,12), pesoCNPJ);
+        Integer digito2 = calcularDigito(cnpj.substring(0,12) + digito1, pesoCNPJ);
+        return cnpj.equals(cnpj.substring(0,12) + digito1.toString() + digito2.toString());
+    }
+
+  /* User Details Implements */
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return null;

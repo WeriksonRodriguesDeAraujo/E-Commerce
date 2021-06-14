@@ -46,9 +46,15 @@ public class EmailController {
 		  
 		  return "Erro no envio";
 	  }
-	  }
-        
+
+  @PostMapping
   public String enviarEmail(@RequestBody MensagemEmail email) {			
+    
+    var email = new MensagemEmail(
+			  "Informações do Pedido",
+			  "Data de Entrega: 17/06/2021 " + _servicoPedido.obterTodos().size(),
+        "E-Commerce <serratecdev@gmail.com>",
+        Arrays.asList("Dudu <luizeduardo15012@gmail.com>"));
 
     try {
       mailler.enviar(email);

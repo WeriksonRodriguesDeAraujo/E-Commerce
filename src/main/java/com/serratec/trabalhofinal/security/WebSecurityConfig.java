@@ -14,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -26,11 +25,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private JWTAuthenticationFilter jwtAuthenticationFilter;
 	
 	@Override
-    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+  public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder
                 .userDetailsService(customUserDetailsService)
                 .passwordEncoder(passwordEncoder());
-    }
+  }
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -48,7 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 			.authorizeRequests()
 			
-			.antMatchers("/api/login","/swagger-ui.html")
+			.antMatchers("/api/login", "/swagger-ui.html")
 			.permitAll()
 			
 			.antMatchers(HttpMethod.POST, "/api/clientes")

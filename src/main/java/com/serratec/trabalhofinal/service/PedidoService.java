@@ -13,13 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.serratec.trabalhofinal.controller.EmailController;
 import com.serratec.trabalhofinal.model.Pedido;
-import com.serratec.trabalhofinal.model.Produto;
 import com.serratec.trabalhofinal.model.exception.ResourceBadRequestException;
 import com.serratec.trabalhofinal.model.exception.ResourceNotFoundException;
 import com.serratec.trabalhofinal.repository.ClienteRepository;
 import com.serratec.trabalhofinal.repository.PedidoRepository;
 import com.serratec.trabalhofinal.repository.ProdutoRepository;
-
 
 @Service
 public class PedidoService {
@@ -41,7 +39,6 @@ public class PedidoService {
 		return this._repositorioPedido.findAll();	
 	}
 	
-	
 	public ResponseEntity<Optional<Pedido>> obterPorId(@PathVariable("id") Integer id) {
 		Optional<Pedido> pedido = this._repositorioPedido.findById(id);
 		
@@ -52,18 +49,16 @@ public class PedidoService {
 		return new ResponseEntity<>(pedido, HttpStatus.OK);
 	}
 	
-	
 	public ResponseEntity<Pedido> adicionar(@RequestBody Pedido pedido) {
 		pedido.setId(null);
-		pedido.setStatus(false);
-		//if(!pedido.validoParaCadastro()) {
-		//	throw new ResourceBadRequestException("Para cadastrar, informe o(s) produto(s) do pedido!");
-		//}
 		
+		if(!pedido.validoParaCadastro()) {
+			throw new ResourceBadRequestException("Para cadastrar, informe o(s) produto(s) do pedido!");
+		}
+	
 		pedido = _repositorioPedido.save(pedido);
 		return new ResponseEntity<>(pedido, HttpStatus.CREATED);
 	}
-	
 	
 	public ResponseEntity<Optional<Pedido>> atualizar(@PathVariable("id") Integer id, @RequestBody Pedido pedido){
 		pedido.setId(id);
@@ -71,20 +66,19 @@ public class PedidoService {
 		var pedidoValido = _repositorioPedido.findById(id);
 		
 		if(pedidoValido.get().getStatus() == true) {
-		throw new ResourceBadRequestException("Usei essa exception só como base") ;//new ResourceForbiddenException("Pedido já finalizado");
+			throw new ResourceBadRequestException("Usei essa exception só como base") ;//new ResourceForbiddenException("Pedido já finalizado");
 		}
 		
 		if(pedidoValido.isEmpty()) {
 			throw new ResourceNotFoundException("Não existe pedido com o id informado: " + id);
 		}
-		
+	
 		this._repositorioPedido.save(pedido);
 		if(pedido.getStatus() == true) {
 			controllerEmail.enviarEmailPedido(pedido);
 		}
 		return new ResponseEntity<>(pedidoValido, HttpStatus.OK);	
 	}
-	
 	
 	public ResponseEntity<?> deletar(@PathVariable("id") Integer id){
 		var existe = _repositorioPedido.findById(id);
