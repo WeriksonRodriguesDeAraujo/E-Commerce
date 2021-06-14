@@ -56,7 +56,6 @@ public class PedidoService {
 		return new ResponseEntity<>(pedido, HttpStatus.CREATED);
 	}
 	
-	
 	public ResponseEntity<Optional<Pedido>> atualizar(@PathVariable("id") Integer id, @RequestBody Pedido pedido){
 		pedido.setId(id);
 		
@@ -69,11 +68,10 @@ public class PedidoService {
 		if(pedidoValido.isEmpty()) {
 			throw new ResourceNotFoundException("Não existe pedido com o id informado: " + id);
 		}
-		
+	
 		this._repositorioPedido.save(pedido);
 		return new ResponseEntity<>(pedidoValido, HttpStatus.OK);	
 	}
-	
 	
 	public ResponseEntity<?> deletar(@PathVariable("id") Integer id){
 		var existe = _repositorioPedido.findById(id);

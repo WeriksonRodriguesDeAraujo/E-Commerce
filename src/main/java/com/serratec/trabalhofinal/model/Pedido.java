@@ -2,7 +2,6 @@ package com.serratec.trabalhofinal.model;
 
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,8 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 
 @Entity 
 @Table(name = "pedido")
@@ -70,7 +69,6 @@ public class Pedido {
 		this.status = status;
 	}
 	
-	
 	public Integer getId() {
 		return id;
 	}
@@ -122,16 +120,17 @@ public class Pedido {
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
-	
-	public void relacionarCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
 
+	
 	public Boolean validoParaCadastro(){
-		return(!this.produtos.isEmpty());
-	}  
+        return(!this.produtos.isEmpty());
+    }  
 	
 	public void relacionarComProduto(Produto produto) {
 		produtos.add(produto);
+	}
+
+	public void relacionarCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 }

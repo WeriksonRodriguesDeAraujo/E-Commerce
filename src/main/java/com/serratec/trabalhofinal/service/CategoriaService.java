@@ -45,7 +45,7 @@ public class CategoriaService {
        }
 		return new ResponseEntity<>(categoria, HttpStatus.OK);
 	}
-	
+
 	public ResponseEntity<Categoria> adicionar(@RequestBody Categoria categoria) {
 		categoria.setId(null);
 		

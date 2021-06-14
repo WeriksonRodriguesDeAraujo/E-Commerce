@@ -37,17 +37,16 @@ public class ClienteService {
     @Autowired
     private EnderecoRepository _repositorioEndereco;
 
-	@Autowired
+	  @Autowired
     private JWTService jwtService;
 
-	@Autowired
+	  @Autowired
     private AuthenticationManager authenticationManager;
 	
-	@Autowired
+	  @Autowired
     private PasswordEncoder passwordEncoder;
 
-	private static final String headerPrefix = "Bearer ";
-	
+	  private static final String headerPrefix = "Bearer ";
 
     public List<Cliente> obterTodos(){        
         return this._repositorioCliente.findAll();        
@@ -100,15 +99,28 @@ public class ClienteService {
 		var clienteExiste = _repositorioCliente.findById(id);    
 		
 		if(clienteExiste.isEmpty()) {
-			throw new ResourceNotFoundException("Cliente não encontrado com o id " + id);
+			  throw new ResourceNotFoundException("Cliente não encontrado com o id " + id);
 	    }  
-		cliente.setId(id);
+		  cliente.setId(id);
      	Endereco endereco = servicoEndereco.ObterEnderecoPorCep(cliente.getEndereco().getCep());
      	cliente.setEndereco(endereco);
      	this._repositorioEndereco.save(endereco);
-		this._repositorioCliente.save(cliente);
-		return new ResponseEntity<>(clienteExiste, HttpStatus.OK);
+		  this._repositorioCliente.save(cliente);
+		  return new ResponseEntity<>(clienteExiste, HttpStatus.OK);
     } 
+    
+    public LoginResponse logar(String email, String senha) {
+    
+    	Authentication autenticacao = authenticationManager.authenticate(
+    			new UsernamePasswordAuthenticationToken(email, senha, Collections.emptyList()));
+    	
+    	SecurityContextHolder.getContext().setAuthentication(autenticacao);
+    	
+    	String token = headerPrefix + jwtService.gerarToken(autenticacao);
+    	
+    	var usuario = _repositorioCliente.findByEmail(email);
+    	return new LoginResponse(token, usuario.get());
+    }
     
     public LoginResponse logar(String email, String senha) {
     

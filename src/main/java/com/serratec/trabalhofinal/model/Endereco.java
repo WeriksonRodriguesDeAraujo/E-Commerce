@@ -2,9 +2,11 @@ package com.serratec.trabalhofinal.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -99,5 +101,5 @@ public class Endereco {
 	public void setUf(String uf) {
 		this.uf = uf;
 	}
-    //#endregion  
+  //#endregion  
 }
