@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/api/clientes")
@@ -26,31 +28,31 @@ public class ClienteController {
     @Autowired
     ClienteService _servicoCliente;
 
-
+    @ApiOperation(value = "Retorna todos os clientes cadastrados")
     @GetMapping
     public List<Cliente> obterTodos(){
         return _servicoCliente.obterTodos();
     }
 
-    
+    @ApiOperation(value = "Retorna os clientes cadastrados de acordo com o Id")
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Cliente>> obterPorId(@PathVariable(value = "id") Integer id){
         return _servicoCliente.obterPorId(id);
     }
 
-
+    @ApiOperation(value = "Adiciona um novo cliente")
     @PostMapping
     public ResponseEntity<Cliente> adicionar(@RequestBody Cliente cliente){
         return _servicoCliente.adicionar(cliente);
     }
 
-
+    @ApiOperation(value = "Deleta um cliente de acordo com o Id")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletar(@PathVariable(value = "id") Integer id){
         return _servicoCliente.deletar(id);
     }
 
-
+    @ApiOperation(value = "Atualiza as informações de um cliente de acordo com o Id")
     @PutMapping("/{id}")
     public ResponseEntity<Optional<Cliente>> atualizar(@PathVariable(value = "id") Integer id, @RequestBody Cliente cliente){
         return _servicoCliente.atualizar(id, cliente);
