@@ -44,7 +44,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 		
 		filterChain.doFilter(request, response);
 		
-		
 	}
 	
 	private String getJwt(HttpServletRequest request) {

@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -52,10 +53,11 @@ public class Produto {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "categoria_id", referencedColumnName = "id")
 	private Categoria categoria;
-
+  
+  // tem que fazer a imagem aqui
+  
 	private Date dataDeCadastro;
 	
-    // tem que fazer a imagem aqui
 	public Produto() {
 		this.dataDeCadastro = new Date();
 	}
@@ -140,7 +142,5 @@ public class Produto {
 	public void relacionarComCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
-
-    
-    //#endregion
+  //#endregion
 }

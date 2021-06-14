@@ -32,20 +32,25 @@ public class ClienteService {
     private ClienteRepository _repositorioCliente;
     
     @Autowired
-
     private EnderecoService servicoEndereco;
     
     @Autowired
     private EnderecoRepository _repositorioEndereco;
 
+	  @Autowired
+    private JWTService jwtService;
+
+	  @Autowired
+    private AuthenticationManager authenticationManager;
+	
+	  @Autowired
     private PasswordEncoder passwordEncoder;
-    
-//08048203f5fac8ea1795bb623ebc23b4ca3352b1
+
+	  private static final String headerPrefix = "Bearer ";
 
     public List<Cliente> obterTodos(){        
         return this._repositorioCliente.findAll();        
     }
-
     
     public ResponseEntity<Optional<Cliente>> obterPorId(@PathVariable(value = "id") Integer id){
         var cliente = _repositorioCliente.findById(id);    
@@ -55,7 +60,6 @@ public class ClienteService {
         } 
         return new ResponseEntity<>(cliente, HttpStatus.OK);
     }
-    
 
     public ResponseEntity<Cliente> adicionar(@RequestBody Cliente cliente) {
     	if(cliente.getNome() == "" || cliente.getNome() == null ||
@@ -81,7 +85,6 @@ public class ClienteService {
         return new ResponseEntity<>(clienteNovo, HttpStatus.CREATED);
     }
     
-
     public ResponseEntity<?> deletar(@PathVariable(value = "id") Integer id) {
     	var encontrado = _repositorioCliente.findById(id); 
     	
@@ -91,29 +94,20 @@ public class ClienteService {
 		this._repositorioCliente.deleteById(id);
 		return new ResponseEntity<>(null, HttpStatus.OK);
     }
-
     
     public ResponseEntity<Optional<Cliente>> atualizar(@PathVariable(value = "id") Integer id, @RequestBody Cliente cliente) {
 		var clienteExiste = _repositorioCliente.findById(id);    
 		
 		if(clienteExiste.isEmpty()) {
-			throw new ResourceNotFoundException("Cliente não encontrado com o id " + id);
+			  throw new ResourceNotFoundException("Cliente não encontrado com o id " + id);
 	    }  
-		cliente.setId(id);
+		  cliente.setId(id);
      	Endereco endereco = servicoEndereco.ObterEnderecoPorCep(cliente.getEndereco().getCep());
      	cliente.setEndereco(endereco);
      	this._repositorioEndereco.save(endereco);
-		this._repositorioCliente.save(cliente);
-		return new ResponseEntity<>(clienteExiste, HttpStatus.OK);
-    }
-    
-    private static final String headerPrefix = "Bearer ";
-    
-    @Autowired
-    private JWTService jwtService;
-    
-    @Autowired
-    private AuthenticationManager authenticationManager;
+		  this._repositorioCliente.save(cliente);
+		  return new ResponseEntity<>(clienteExiste, HttpStatus.OK);
+    } 
     
     public LoginResponse logar(String email, String senha) {
     
@@ -128,5 +122,16 @@ public class ClienteService {
     	return new LoginResponse(token, usuario.get());
     }
     
+    public LoginResponse logar(String email, String senha) {
     
+    	Authentication autenticacao = authenticationManager.authenticate(
+    			new UsernamePasswordAuthenticationToken(email, senha, Collections.emptyList()));
+    	
+    	SecurityContextHolder.getContext().setAuthentication(autenticacao);
+    	
+    	String token = headerPrefix + jwtService.gerarToken(autenticacao);
+    	
+    	var usuario = _repositorioCliente.findByEmail(email);
+    	return new LoginResponse(token, usuario.get());
+    }
 }

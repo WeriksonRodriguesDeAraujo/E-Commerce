@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.serratec.trabalhofinal.model.error.ErrorMessage;
 import com.serratec.trabalhofinal.model.exception.ResourceBadRequestException;
+import com.serratec.trabalhofinal.model.exception.ResourceForbiddenException;
 import com.serratec.trabalhofinal.model.exception.ResourceNotFoundException;
+import com.serratec.trabalhofinal.model.exception.ResourceUnauthorizedException;
 
 @ControllerAdvice
 public class ApiHandlerException {
@@ -41,7 +43,7 @@ public class ApiHandlerException {
 	
 	
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<?> HandleResourceBadRequestException(Exception exception) {
+	public ResponseEntity<?> HandleResourceIntenalServerException(Exception exception) {
 		
 		ErrorMessage errorMessage = new ErrorMessage("Internal Server Error",
 				HttpStatus.INTERNAL_SERVER_ERROR.value(),
@@ -50,6 +52,30 @@ public class ApiHandlerException {
 				new Date().getTime());
 		
 		return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@ExceptionHandler(ResourceUnauthorizedException.class)
+	public ResponseEntity<?> HandleResourceUnauthorizedException(ResourceUnauthorizedException exception) {
+		
+		ErrorMessage errorMessage = new ErrorMessage("Unauthorized",
+				HttpStatus.UNAUTHORIZED.value(),
+				exception.getMessage(),
+				exception.getClass().getName(),
+				new Date().getTime());
+		
+		return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
+	}
+
+	@ExceptionHandler(ResourceForbiddenException.class)
+	public ResponseEntity<?> HandleResourceUnauthorizedException(ResourceForbiddenException exception) {
+		
+		ErrorMessage errorMessage = new ErrorMessage("Forbidden",
+				HttpStatus.FORBIDDEN.value(),
+				exception.getMessage(),
+				exception.getClass().getName(),
+				new Date().getTime());
+		
+		return new ResponseEntity<>(errorMessage, HttpStatus.FORBIDDEN);
 	}
 	
 }

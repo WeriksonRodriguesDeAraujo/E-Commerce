@@ -26,16 +26,13 @@ public class EmailController {
 
   @ApiOperation(value = "Envia um email")
   @PostMapping
-
-  public String enviarEmail() {			
-	  
-	  var email = new MensagemEmail(
+  public String enviarEmail(@RequestBody MensagemEmail email) {			
+    
+    var email = new MensagemEmail(
 			  "Informações do Pedido",
 			  "Data de Entrega: 17/06/2021 " + _servicoPedido.obterTodos().size(),
         "E-Commerce <serratecdev@gmail.com>",
         Arrays.asList("Dudu <luizeduardo15012@gmail.com>"));
-        
-  public String enviarEmail(@RequestBody MensagemEmail email) {			
 
     try {
       mailler.enviar(email);

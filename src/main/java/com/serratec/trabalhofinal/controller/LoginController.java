@@ -18,8 +18,7 @@ public class LoginController {
 	
 	@PostMapping
 	public LoginResponse login (@RequestBody LoginRequest request) {
-		
-		return servicoCliente.logar(request.getEmail(), request.getSenha());
+		  return servicoCliente.logar(request.getEmail(), request.getSenha());
 	}
 	
 }
