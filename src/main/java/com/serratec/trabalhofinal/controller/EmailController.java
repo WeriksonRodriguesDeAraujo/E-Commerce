@@ -46,7 +46,8 @@ public class EmailController {
 		  
 		  return "Erro no envio";
 	  }
-
+  }
+  
   @PostMapping
   public String enviarEmailDoPedido() {			
     

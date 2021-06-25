@@ -17,7 +17,7 @@ public class ProdutoImgService {
 	@Value("${caminho.raiz}")
 	private String raiz;
 	 
-public void salvar(String caminho, MultipartFile arquivo) {
+	public void salvar(String caminho, MultipartFile arquivo) {
 		
 		Path diretorio = Paths.get(this.raiz, caminho);
 		Path arquivoPath = diretorio.resolve(arquivo.getOriginalFilename());
